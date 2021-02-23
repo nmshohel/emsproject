@@ -25,4 +25,27 @@ class SocialLink(models.Model):
     
     def __str__(self):
         return str(self.user)
+class LeaveApplication(models.Model):
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    case_of_leave=models.TextField(blank=True, null=True)
+    leave_category=models.CharField(max_length=250)
+    star_date=models.DateField(blank=True, null=True)
+    end_date=models.DateField(blank=True, null=True)
+    date=models.DateField(auto_now_add=True)
+    checked=models.BooleanField(default=False)
+    approved=models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.user)
+
+class ToDoList(models.Model):
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    what_to_do=models.TextField(blank=True, null=True)
+    when_to_do=models.DateField(blank=True, null=True)
+    pending_status=models.BooleanField(default=True)
+    working_status=models.BooleanField(default=False)
+    done_status=models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.user) 
     
