@@ -3,6 +3,16 @@
 
 {% block content %}
     <div class="container" >
+      <div class="row">
+        <div class="coll-8 mt-2">
+          <ul>
+            <a href="{% url 'export_csv_all_application'%}"><button class="btn btn-primary">CSV</button> </a>
+            <a href="{% url 'export_pdf_all_application' %}"><button class="btn btn-primary">PDF</button> </a>
+            <a href="{% url 'export_xls_all_application' %}"><button class="btn btn-primary">Execl</button> </a>
+          </ul>
+        </div>
+
+      </div>
         <div class="row">
             <div class="col-md-12 m-auto pt-5">
               {{ msg }}

@@ -11,6 +11,9 @@ urlpatterns = [
     path('', user_login, name='user_login'),
     path('todolist', to_do_list, name='todolist'),
     path('add-todo-list', add_todo_list, name='add_todo_list'),
-    path('user-logout', user_logout, name='user_logout')
-    
+    path('user-logout', user_logout, name='user_logout'),
+    path('export-csv-all-application', export_csv_all_application, name='export_csv_all_application'),
+    path('export-xls-all-application', export_xls_all_application, name='export_xls_all_application'),
+    path('export-pdf-all-application', export_pdf_all_application, name='export_pdf_all_application')
+     
 ]
