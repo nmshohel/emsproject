@@ -58,15 +58,45 @@
                   {%endif%}
             </div>
         </div>
-        <div class="d-flex justify-content-center">
-          <nav aria-label="Page navigation example" style="justify-content: right">
-            <ul class="pagination">
-              <li class="page-item"><a class="page-link" href="#">Previous</a></li>       
-              <li class="page-item"><a class="page-link" href="#">Next</a></li>
-      
-            </ul>
-          </nav>
+        <div class="row">
+
+       <div class="col-md-12 d-flex justify-content-center">
+        <!-- <nav aria-label="..."> -->
+          <ul class="pagination">
+            <li class="page-item">
+              {% if applications.has_previous %}
+              <a class="page-link" href="{% url 'all_application' %}?page={{applications.previous_page_number}}">Previous</a>
+              {% endif %}
+            </li>
+            <!-- <li class="page-item"><a class="page-link" href="#">1</a></li> -->
+            <li class="page-item active">
+              <a class="page-link" >Page {{ page_number }} of {{ total_page }}</a>
+            </li>
+            <!-- <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+            <li class="page-item">
+              {% if applications.has_next %}
+              <a class="page-link" href="{% url 'all_application' %}?page={{applications.next_page_number}}">Next</a>
+              {% endif %}
+            </li>
+          </ul>
+        <!-- </nav> -->
+            
+
+      <!-- {% if applications.has_previous %}
+       <a href="{% url 'all_application' %}?page={{applications.previous_page_number}}"> Privous Page</a>
+       {% endif %}
+        
+        Page {{ page_number }} of {{ total_page }}
+        
+       {% if applications.has_next %}
+       <a href="{% url 'all_application' %}?page={{applications.next_page_number}}"> Next Page</a>
+       {% endif %} -->
+
+
+         </div>
+
         </div>
+
     </div>
 
 

@@ -1,7 +1,7 @@
 from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
-from django.core.paginator import Paginator, EmptyPage
+from django.core.paginator import Paginator, EmptyPage,PageNotAnInteger
 
 # Create your views here.
 from .models import *
@@ -11,7 +11,13 @@ from django.template.loader import render_to_string
 from weasyprint import HTML
 import tempfile
 from django.db.models import Sum
-
+from xhtml2pdf import pisa
+from io import BytesIO
+import sys
+import matplotlib
+import matplotlib.pyplot as plt
+import numpy
+import numpy as np
 
 def user_login(request):
     if request.method == 'POST':
@@ -28,13 +34,25 @@ def user_login(request):
 
     return render(request, 'login.html')
 
+
 def user_profile(request):
     user=request.user
     user=User.objects.get(username=user)
     print(user)
+
+    y = np.array([35, 25, 25, 15])
+    print(type(y))
+    mylabels = ["Apples", "Bananas", "Cherries", "Dates"]
+    plt.pie(y, labels = mylabels, startangle = 90)
+    p=plt.show()
+
+    plt.savefig(sys.stdout.buffer)
+    sys.stdout.flush()
+
+    print(matplotlib.__version__)
     userprofile=UserProfile.objects.get(user = user)
     usersociallink=SocialLink.objects.get(user=user)
-    context={'userprofile':userprofile,'usersociallink':usersociallink}
+    context={'userprofile':userprofile,'usersociallink':usersociallink,'p':p}
     return render(request, 'userprofile.html', context)
 
 
@@ -72,14 +90,20 @@ def add_leave_from(request):
 
 def all_application(request):
     applications=LeaveApplication.objects.filter(checked=False)
-    # print(applications)
-    # # paginator = Paginator(applications, 25)
-    # print(paginator) # Show 25 contacts per page.
-    # # page_number = request.GET.get('page')
-    # print(page_number)
-    # # page_obj = paginator.get_page(page_number)
-    # print(page_obj)
-    context={'applications':applications}
+
+    p= Paginator(applications, 2) #item per page
+
+    total_page=p.num_pages
+    
+    page_number = request.GET.get('page',1)
+    try:
+        page=p.page(page_number)
+    except EmptyPage:
+        page=p.page(1)
+
+    # page_obj = paginator.get_page(page_number)
+    context={'applications':page,'total_page':total_page,'page_number':page_number}
+    # context={'applications':applications,'page_obj':page}
     return render(request, 'all_application.html',context)
 
 def applicatin_approval(request, id, sts):
@@ -182,33 +206,68 @@ def export_xls_all_application(request):
     wb.save(response)
     return response
 
+def generate_pdf(request):
+    html = '<html><body><p>To PDF or not to PDF</p></body></html>'
+    write_to_file = open('media/test.pdf', "w+b")
+    result = pisa.CreatePDF(html,dest=write_to_file)
+    write_to_file.close()
+    return HttpResponse(result.err)
+
+def generate_pdf_through_template(request):
+    context={}
+
+    html = render_to_string('pdf_template.html',context)
+    
+    write_to_file = open('media/test_1.pdf', "w+b")
+    
+    result = pisa.CreatePDF(html,dest=write_to_file)
+    
+    write_to_file.close()
+    
+    return HttpResponse(result.err)
+
+
+def render_pdf(request):
+    path = "pdf_template.html"
+    context = {"states" : State.objects.all()[:100]}
+
+    html = render_to_string('pdf_template.html',context)
+    io_bytes = BytesIO()
+    
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), io_bytes)
+    
+    if not pdf.err:
+        return HttpResponse(io_bytes.getvalue(), content_type='application/pdf')
+    else:
+        return HttpResponse("Error while rendering PDF", status=400)
 
 def export_pdf_all_application(request):
-    pass
+    path = "pdf_output.html"
+    context = {"LeaveApplications" : LeaveApplication.objects.all()[:100]}
 
-# from django.apps import apps
-# from easy_pdf.views import PDFTemplateView
+    html = render_to_string('pdf_output.html',context)
+    io_bytes = BytesIO()
+    
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), io_bytes)
+    
+    if not pdf.err:
+        return HttpResponse(io_bytes.getvalue(), content_type='application/pdf')
+    else:
+        return HttpResponse("Error while rendering PDF", status=400)
 
-# class PDFDetailView(PDFTemplateView):
-#         template_name = 'templates/pdf-output.html'
-        
-#         def get(self, request, *args, **kwargs):
-#             context = self.get_context_data(**kwargs)
-            
-#             # get the parameters values
-#             app_name = request.GET.get('app_name')
-#             model_name = request.GET.get('model_name')
-            
-#             # get your model class
-#             LeaveApplication = apps.get_model(app_label=app_name, model_name=model_name)
-#             # make a query if you want to send objects to the template context
-#             objects = LeaveApplication.objects.all()
-            
-#             context.update({
-#                 'objects': objects,
-#                 'text': 'printing some text...',
-#                 'title': 'Example pdf page',
-#             })
-#             return self.render_to_response(context)
+def add_employee(request):
+    if request.method == 'POST':
+        username=request.POST['username']
+        password=request.POST['password']
+        user=User.objects.create_user(username=username, password=password)
+        profile=UserProfile.objects.create(user=user)
+        sociallink=SocialLink.objects.create(user=user)
+        smg="Successfully Added Employee"
+        context={'smg':smg}
+        return render(request, 'add_employee.html',context)
 
+    else:
+        form=UserForm()
+        context={'form':form}
+        return render(request, 'add_employee.html',context)
 

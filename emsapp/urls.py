@@ -3,6 +3,7 @@ from django.urls import path
 from .views import *
 urlpatterns = [
 
+    path('add-employee', add_employee, name='add_employee'),
     path('to-do-list-move/<int:id>/<sts>', to_do_list_move, name='to_do_list_move'),
     path('userprofile', user_profile, name='user_profile'),
     path('applicatin-approval/<int:id>/<int:sts>', applicatin_approval, name='applicatin_approval'),
@@ -14,6 +15,10 @@ urlpatterns = [
     path('user-logout', user_logout, name='user_logout'),
     path('export-csv-all-application', export_csv_all_application, name='export_csv_all_application'),
     path('export-xls-all-application', export_xls_all_application, name='export_xls_all_application'),
-    path('export-pdf-all-application', export_pdf_all_application, name='export_pdf_all_application')
+    path('export-pdf-all-application', export_pdf_all_application, name='export_pdf_all_application'),
+    path('export-pdf-all-application', export_pdf_all_application, name='export_pdf_all_application'),
+    path('generate-pdf', generate_pdf, name="generate_pdf"),
+    path('generate-pdf-through-template', generate_pdf_through_template, name="generate_pdf_through_template"),
+    path('render-pdf', render_pdf, name="render_pdf")
      
 ]

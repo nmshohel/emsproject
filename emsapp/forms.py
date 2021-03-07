@@ -1,5 +1,6 @@
 from .models import *
 from django import forms
+from django.contrib.auth.models import User
 
 # from django.forms import ModelForm
 
@@ -26,3 +27,18 @@ class TodolistForm(forms.ModelForm):
             'what_to_do':forms.TextInput(attrs={'class':'form-control bg-light'}),
 
         }
+class UserForm(forms.ModelForm):
+    
+    class Meta:
+        model=User
+        fields=['username', 'password']
+        help_texts={
+            'username':None
+          
+        }
+        widgets={
+             'username':forms.TextInput(attrs={'class': 'form-control form bg-light ' }),
+             'password':forms.PasswordInput(attrs={'class': 'form-control  bg-light ' }),
+  
+             
+        } 
