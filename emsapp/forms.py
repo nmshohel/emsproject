@@ -1,6 +1,7 @@
 from .models import *
 from django import forms
 from django.contrib.auth.models import User
+from .models import *
 
 # from django.forms import ModelForm
 
@@ -28,6 +29,8 @@ class TodolistForm(forms.ModelForm):
 
         }
 class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form rounded form-group col-md-2 mt-3 bg-light', 'placeholder':"Enter Password..."}))
+    department = forms.ModelChoiceField(widget=forms.Select(attrs={'class':'rounded form form-group bg-light col-md-5',}), queryset =Department.objects.all())
     
     class Meta:
         model=User
@@ -38,7 +41,7 @@ class UserForm(forms.ModelForm):
         }
         widgets={
              'username':forms.TextInput(attrs={'class': 'form-control form bg-light ' }),
-             'password':forms.PasswordInput(attrs={'class': 'form-control  bg-light ' }),
+             
   
              
         } 
