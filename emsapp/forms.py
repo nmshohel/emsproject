@@ -1,6 +1,6 @@
 from .models import *
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 from .models import *
 
 # from django.forms import ModelForm
@@ -29,18 +29,23 @@ class TodolistForm(forms.ModelForm):
 
         }
 class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form rounded form-group col-md-2 mt-3 bg-light', 'placeholder':"Enter Password..."}))
-    department = forms.ModelChoiceField(widget=forms.Select(attrs={'class':'rounded form form-group bg-light col-md-5',}), queryset =Department.objects.all())
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form rounded form-group col-md-6 mt-3 bg-light', 'placeholder':"Enter Password..."}))
+    department = forms.ModelChoiceField(widget=forms.Select(attrs={'class':'rounded form form-group bg-light col-md-6',}), queryset =Department.objects.all())
+    designation=forms.ModelChoiceField(widget=forms.Select(attrs={'class':'rounded form form-group bg-light col-md-6',}), queryset=Group.objects.all())
     
     class Meta:
         model=User
-        fields=['username', 'password']
+        fields=['first_name','last_name','username', 'password','department','email','designation']
         help_texts={
-            'username':None
+            'username':None, 
+            'email':None
           
         }
         widgets={
-             'username':forms.TextInput(attrs={'class': 'form-control form bg-light ' }),
+            'username':forms.TextInput(attrs={'class':'form rounded form-group bg-light col-md-4 mt-3', 'placeholder':"Enter UserName..."}),
+            'email':forms.TextInput(attrs={'class':'form form-control bg-light col-md-5', 'placeholder':"Enter Email..."}),
+            'first_name':forms.TextInput(attrs={'class':'rounded form form-group bg-light col-md-5 mr-3', 'placeholder':"Enter First Name..."}),
+            'last_name':forms.TextInput(attrs={'class':'rounded form form-group bg-light col-md-5', 'placeholder':"Enter Last Name..."}),
              
   
              

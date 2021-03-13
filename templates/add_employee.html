@@ -12,13 +12,24 @@
 <div class="container pt-5">
         
     <div class="row">
-
+        {% if message %}
+        {% if sts == 'danger' %}
+        <div class="alert alert-danger" role="alert">
+           {{ message }}
+          </div>
+          {% endif %}
+        {% if sts == 'success' %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+           </div>
+           {% endif %}
+        {% endif %}
           
        
         <form method="POST">
             {% csrf_token %}
 
-            {{ form }}
+            {{ form }}<br>
             <button type="submit" class="btn btn-primary">Add Employee</button>
         </form>
     </div>

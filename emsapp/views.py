@@ -1,5 +1,6 @@
 from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage,PageNotAnInteger
 
@@ -34,7 +35,7 @@ def user_login(request):
 
     return render(request, 'login.html')
 
-
+@login_required(login_url='')
 def user_profile(request):
     user=request.user
     user=User.objects.get(username=user)
@@ -52,10 +53,10 @@ def user_profile(request):
     print(matplotlib.__version__)
     userprofile=UserProfile.objects.get(user = user)
     usersociallink=SocialLink.objects.get(user=user)
-    context={'userprofile':userprofile,'usersociallink':usersociallink,'p':p}
+    context={'userprofile':userprofile,'usersociallink':usersociallink,'p':p,'user':user}
     return render(request, 'userprofile.html', context)
 
-
+@login_required(login_url='/')
 def add_leave_from(request):
     if request.method == 'POST':
         print(request.user)
@@ -88,6 +89,7 @@ def add_leave_from(request):
             context={'form':form}
             return render(request, 'add_leave_from.html', context)
 
+@login_required(login_url='/')
 def all_application(request):
     applications=LeaveApplication.objects.filter(checked=False)
 
@@ -124,6 +126,7 @@ def applicatin_approval(request, id, sts):
         context={'msg':"Leave application Approved"}
         return render(request, 'all_application.html', context)
 
+@login_required(login_url='/')
 def to_do_list(request):
     my_todo_list_pending=ToDoList.objects.filter(user=request.user,pending_status=True)
     working_todo_list=ToDoList.objects.filter(user=request.user,working_status=True) 
@@ -254,20 +257,47 @@ def export_pdf_all_application(request):
         return HttpResponse(io_bytes.getvalue(), content_type='application/pdf')
     else:
         return HttpResponse("Error while rendering PDF", status=400)
-
+@login_required(login_url='/')
 def add_employee(request):
     if request.method == 'POST':
         username=request.POST['username']
         password=request.POST['password']
-        user=User.objects.create_user(username=username, password=password)
-        profile=UserProfile.objects.create(user=user)
+        department_id=request.POST['department']
+        email=request.POST['email']
+        f_name=request.POST['first_name']
+        l_name=request.POST['last_name']
+        designation_id=request.POST['designation']
+        department=Department.objects.get(id=department_id)
+        designation=Group.objects.get(id=designation_id)
+        print(username)
+        print(password)
+        print(email)
+        print(department)
+        # user=User.objects.create_user(username=username, password=password)
+        # profile=UserProfile.objects.create(user=user,department=department.name,email_address=email)
+        # sociallink=SocialLink.objects.create(user=user)
+
+        user = User.objects.create_user(username = username, password = password, first_name=f_name, last_name=l_name)
+        profile = UserProfile.objects.create(user = user, department = department, email_address = email,designation=designation)
         sociallink=SocialLink.objects.create(user=user)
-        smg="Successfully Added Employee"
-        context={'smg':smg}
-        return render(request, 'add_employee.html',context)
+        form = UserForm()
+        message = "Successfully Added!"
+        status = 'success'
+        context = {'form':form, 'message':message, 'sts':status}
+        return render(request, 'add_employee.html', context)
 
     else:
-        form=UserForm()
-        context={'form':form}
-        return render(request, 'add_employee.html',context)
+        form = UserForm()
+        context = {'form':form}
+        return render(request, 'add_employee.html', context)
+    
+    
+        
+
+    # else:
+    #     form = UserForm()
+    #     message = "password not matched"
+    #     status = 'danger'
+    #     context = {'form':form, 'message':message,'sts':status}
+    #     return render(request, 'add_employee.html', context)
 
