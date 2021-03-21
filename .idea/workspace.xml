@@ -3,6 +3,20 @@
   <component name="ChangeListManager">
     <list default="true" id="e8f715da-4a97-448f-8435-3d78cd3a321d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/emsapp/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/emsapp/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/emsapp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/emsapp/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/emsapp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/emsapp/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/emsapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/emsapp/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/emsproject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/emsproject/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/media/mypic.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/media/quiz.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/media/secondclass.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/media/test.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/media/test_1.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/add_employee.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/add_employee.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/userprofile.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/userprofile.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

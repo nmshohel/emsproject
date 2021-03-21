@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage,PageNotAnInteger
 
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 # Create your views here.
 from .models import *
 from .forms import *
@@ -259,7 +261,13 @@ def export_pdf_all_application(request):
         return HttpResponse("Error while rendering PDF", status=400)
 @login_required(login_url='/')
 def add_employee(request):
-    if request.method == 'POST':
+    if request.method == 'POST' and request.FILES['myfile']:
+        # is_private = request.POST.get('is_private', False)
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+
         username=request.POST['username']
         password=request.POST['password']
         department_id=request.POST['department']
@@ -278,7 +286,7 @@ def add_employee(request):
         # sociallink=SocialLink.objects.create(user=user)
 
         user = User.objects.create_user(username = username, password = password, first_name=f_name, last_name=l_name)
-        profile = UserProfile.objects.create(user = user, department = department, email_address = email,designation=designation)
+        profile = UserProfile.objects.create(user = user, department = department, email_address = email,designation=designation,profile_image=uploaded_file_url)
         sociallink=SocialLink.objects.create(user=user)
         form = UserForm()
         message = "Successfully Added!"

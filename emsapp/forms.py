@@ -44,9 +44,6 @@ class UserForm(forms.ModelForm):
         widgets={
             'username':forms.TextInput(attrs={'class':'form rounded form-group bg-light col-md-4 mt-3', 'placeholder':"Enter UserName..."}),
             'email':forms.TextInput(attrs={'class':'form form-control bg-light col-md-5', 'placeholder':"Enter Email..."}),
-            'first_name':forms.TextInput(attrs={'class':'rounded form form-group bg-light col-md-5 mr-3', 'placeholder':"Enter First Name..."}),
+            'first_name':forms.TextInput(attrs={'class':'rounded form form-group bg-light col-md-5', 'placeholder':"Enter First Name..."}),
             'last_name':forms.TextInput(attrs={'class':'rounded form form-group bg-light col-md-5', 'placeholder':"Enter Last Name..."}),
-             
-  
-             
         } 

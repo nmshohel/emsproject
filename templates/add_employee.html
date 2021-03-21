@@ -11,7 +11,7 @@
 
 <div class="container pt-5">
         
-    <div class="row">
+  
         {% if message %}
         {% if sts == 'danger' %}
         <div class="alert alert-danger" role="alert">
@@ -26,13 +26,21 @@
         {% endif %}
           
        
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
             {{ form }}<br>
+          
+            
+                
+                <input type="file" name="myfile">
+                
+
+
+
             <button type="submit" class="btn btn-primary">Add Employee</button>
         </form>
-    </div>
+   
 
 </div>
        
